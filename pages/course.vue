@@ -3,8 +3,7 @@
         <div class="prose mb-12">
             <h1>
                 <span class="font-medium">
-                    Course:
-                    <span class="font-bold">Mastering Nuxt</span>
+                    Skill<span class="font-bold">Wave</span>
                 </span>
             </h1>
         </div>
