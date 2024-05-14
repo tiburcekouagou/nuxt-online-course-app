@@ -5,6 +5,10 @@ const route = useRoute();
 const isActiveLink = (lessonPath: string): boolean => {
     return lessonPath === route.fullPath
 }
+const resetError = async (error: Ref<Error | null>) => {
+  await navigateTo("/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3");
+  error.value = null;
+}
 </script>
 
 <template>
@@ -44,7 +48,19 @@ const isActiveLink = (lessonPath: string): boolean => {
       </div>
 
       <div class="prose p-12 bg-white rounded-md w-[65ch]">
-        <NuxtPage />
+        <NuxtErrorBoundary>
+          <NuxtPage />
+          <template #error="{error}">
+            <p>Sorry Tiburce ! The milk is not good !</p>
+            <p>{{ error }}</p>
+            <p 
+              class="hover:cursor-pointer bg-gray-500 text-white font-bold py-1 px-3 rounded"
+              @click="resetError(error)"
+            >
+              <button>Reset</button>
+            </p>
+          </template>
+        </NuxtErrorBoundary>
       </div>
     </div>
   </div>
