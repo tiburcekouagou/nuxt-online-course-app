@@ -1,15 +1,16 @@
-import type { Course } from "~/@types";
+import type { Chapter, Course, Lesson } from "~/@types";
 import courseData from "./courseData";
 
 export const useCourse = (): Course => {
-    return {
-        ...courseData,
-        chapters: courseData.chapters.map((chapter) => ({
+    const chapters: Chapter[] = courseData.chapters.map((chapter) => {
+        const lessons: Lesson[] = chapter.lessons.map((lesson) => ({
+            ...lesson,
+            path: `/course/chapter/${chapter.slug}/lesson/${lesson.slug}`,
+        }));
+        return {
             ...chapter,
-            lessons: chapter.lessons.map((lesson) => ({
-                ...lesson,
-                path: `/course/chapter/${chapter.slug}/lesson/${lesson.slug}`
-            }))
-        }))
-    };
+            lessons,
+        }
+    })
+    return { ...courseData, chapters };
 }
