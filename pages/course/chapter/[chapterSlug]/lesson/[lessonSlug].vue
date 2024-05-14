@@ -22,7 +22,7 @@ useHead({
   title: pageTitle,
 });
 
-const progress = useState<boolean[][]>("progress", () => {
+const progress = useLocalStorage<boolean[][]>("progress", () => {
   return [];
 });
 
