@@ -80,7 +80,7 @@ const toggleComplete = () => {
 
     <p>{{ lesson.text }}</p>
     <LessonCompleteButton
-      :model-value="isLessonComplete"
+      v-model="isLessonComplete"
       @update:model-value="toggleComplete"
     />
   </div>
