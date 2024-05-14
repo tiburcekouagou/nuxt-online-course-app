@@ -37,6 +37,13 @@ const lesson = computed(() => {
       Download Video
     </a>
     </div>
+
+    <VideoPlayer
+    v-if="lesson?.videoId"
+     :video-id="lesson?.videoId"
+     class="w-full"
+      />
+    
     <p>{{ lesson?.text }}</p>
   </div>
 </template>
