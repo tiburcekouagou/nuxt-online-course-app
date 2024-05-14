@@ -2,6 +2,9 @@
 const { chapters } = useCourse();
 const route = useRoute();
 
+const showSplash = computed<boolean>(() => {
+  return route.path === "/course";
+})
 const isActiveLink = (lessonPath: string): boolean => {
     return lessonPath === route.fullPath
 }
@@ -48,19 +51,27 @@ const resetError = async (error: Ref<Error | null>) => {
       </div>
 
       <div class="prose p-12 bg-white rounded-md w-[65ch]">
-        <NuxtErrorBoundary>
-          <NuxtPage />
-          <template #error="{error}">
-            <p>Sorry Tiburce ! The milk is not good !</p>
-            <p>{{ error }}</p>
-            <p 
-              class="hover:cursor-pointer bg-gray-500 text-white font-bold py-1 px-3 rounded"
-              @click="resetError(error)"
-            >
-              <button>Reset</button>
-            </p>
-          </template>
-        </NuxtErrorBoundary>
+        <div v-if="showSplash">
+          <h2>Welcome to the course</h2>
+          <div class="rounded-md overflow-hidden">
+            <img src="/splash.webp" alt="vueschool image" class="m-0">
+          </div>
+        </div>
+        <div else>
+          <NuxtErrorBoundary>
+            <NuxtPage />
+            <template #error="{error}">
+              <p>Sorry Tiburce ! The milk is not good !</p>
+              <p>{{ error }}</p>
+              <p
+                class="hover:cursor-pointer bg-gray-500 text-white font-bold py-1 px-3 rounded"
+                @click="resetError(error)"
+              >
+                <button>Reset</button>
+              </p>
+            </template>
+          </NuxtErrorBoundary>
+        </div>
       </div>
     </div>
   </div>
