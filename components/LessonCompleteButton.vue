@@ -1,12 +1,5 @@
 <script setup lang="ts">
-type Props = {
-  modelValue: boolean;
-};
-
-const props = withDefaults(defineProps<Props>(), { modelValue: false });
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: boolean): void
-}>()
+const model = defineModel()
 </script>
 
 <template>
@@ -18,8 +11,7 @@ const emit = defineEmits<{
   }"
   >
     <input type="checkbox" 
-    :value="props.modelValue"
-    @input="() =>emit('update:modelValue', !modelValue)"
+    v-model="model"
     class="hidden"
      />
      {{ modelValue ? 'Completed' : 'Mark as completed' }}
