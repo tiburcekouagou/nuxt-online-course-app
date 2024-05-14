@@ -8,9 +8,7 @@ const isActiveLink = (lessonPath: string): boolean => {
 </script>
 
 <template>
-  <div
-    class="p-12 bg-amber-400 w-full h-full min-h-screen flex flex-col items-center"
-  >
+  <div>
     <div class="prose mb-12">
       <h1>
         <span class="font-medium">
