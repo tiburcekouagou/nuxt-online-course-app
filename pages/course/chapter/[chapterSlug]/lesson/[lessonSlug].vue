@@ -2,9 +2,37 @@
 const course = useCourse();
 const route = useRoute();
 
-// if (route.params.lessonSlug === "3-typing-component-events") {
-//   console.log((route.params.paramthatdoesnotexist as any).capitalizeIsNotAMethod())
-// }
+definePageMeta({
+  validate(route) {
+    const course = useCourse();
+
+    const chapter = course.chapters.find(
+      (chapter) => chapter.slug === route.params.chapterSlug
+    );
+
+    if (!chapter) {
+      return createError({
+        statusCode: 404,
+        statusMessage: "Not Found",
+        message: "Chapter not found",
+      });
+    }
+
+    const lesson = chapter.lessons.find(
+      (lesson) => lesson.slug === route.params.lessonSlug
+    );
+
+    if (!lesson) {
+      return createError({
+        statusCode: 404,
+        statusMessage: "Not Found",
+        message: "Lesson not found",
+      });
+    }
+    
+    return true;
+  },
+});
 
 const chapter = computed(() => {
   return course.chapters.find(
@@ -12,26 +40,11 @@ const chapter = computed(() => {
   );
 });
 
-if (!chapter.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: "Not Found",
-    message: "Chapter not found",
-  })
-}
-
 const lesson = computed(() => {
   return chapter.value?.lessons.find(
     (lesson) => lesson.slug === route.params.lessonSlug
   );
 });
-if (!lesson.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: "Not Found",
-    message: "Lesson not found",
-  })
-}
 
 const pageTitle = computed(() => {
   return `${lesson.value?.title} - ${course.title}` || "Skill Wave";
@@ -98,10 +111,10 @@ const toggleComplete = () => {
     />
 
     <p>{{ lesson.text }}</p>
-      <LessonCompleteButton
-        v-model="isLessonComplete"
-        @update:model-value="toggleComplete"
-      />
+    <LessonCompleteButton
+      v-model="isLessonComplete"
+      @update:model-value="toggleComplete"
+    />
   </div>
   <div v-else>No content found !</div>
 </template>
