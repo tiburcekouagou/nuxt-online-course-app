@@ -79,10 +79,10 @@ const toggleComplete = () => {
     />
 
     <p>{{ lesson.text }}</p>
-    <LessonCompleteButton
-      v-model="isLessonComplete"
-      @update:model-value="toggleComplete"
-    />
+      <LessonCompleteButton
+        v-model="isLessonComplete"
+        @update:model-value="toggleComplete"
+      />
   </div>
   <div v-else>No content found !</div>
 </template>
