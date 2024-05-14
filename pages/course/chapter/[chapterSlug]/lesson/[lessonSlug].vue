@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const course = useCourse()
-const route = useRoute()
+const course = useCourse();
+const route = useRoute();
 
 const chapter = computed(() => {
-return course.chapters.find(
-  (chapter) => chapter.slug === route.params.chapterSlug
-);
+  return course.chapters.find(
+    (chapter) => chapter.slug === route.params.chapterSlug
+  );
 });
 
 const lesson = computed(() => {
@@ -13,6 +13,14 @@ const lesson = computed(() => {
     (lesson) => lesson.slug === route.params.lessonSlug
   );
 });
+
+const pageTitle = computed(() => {
+  return `${lesson.value?.title} - ${course.title}` || "Skill Wave"
+})
+
+useHead({
+  title: pageTitle
+})
 </script>
 
 <template>
@@ -23,27 +31,27 @@ const lesson = computed(() => {
     <h2 class="my-0">{{ lesson?.title }}</h2>
     <div class="flex space-x-4 mt-2 mb-8">
       <NuxtLink
-      v-if="lesson?.sourceUrl"
-      class="font-normal text-md text-gray-500"
-       :to="lesson.sourceUrl"
-       >
-       Download Source Code
-      </NuxtLink>
-      <NuxtLink 
-      v-if="lesson?.downloadUrl"
-      class="font-normal text-md text-gray-500"
-      :to="lesson.downloadUrl"
+        v-if="lesson?.sourceUrl"
+        class="font-normal text-md text-gray-500"
+        :to="lesson.sourceUrl"
       >
-      Download Video
-    </NuxtLink>
+        Download Source Code
+      </NuxtLink>
+      <NuxtLink
+        v-if="lesson?.downloadUrl"
+        class="font-normal text-md text-gray-500"
+        :to="lesson.downloadUrl"
+      >
+        Download Video
+      </NuxtLink>
     </div>
 
     <VideoPlayer
-    v-if="lesson?.videoId"
-     :video-id="lesson?.videoId"
-     class="w-full"
-      />
-    
+      v-if="lesson?.videoId"
+      :video-id="lesson?.videoId"
+      class="w-full"
+    />
+
     <p>{{ lesson?.text }}</p>
   </div>
 </template>
