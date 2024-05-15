@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { chapters } = useCourse();
+const { chapters, title } = useCourse();
 const route = useRoute();
 
 const showSplash = computed<boolean>(() => {
@@ -20,7 +20,7 @@ const resetError = async (error: Ref<Error | null>) => {
       <NuxtLink to="/course" class="no-underline">
         <h1>
           <span class="font-medium">
-            Skill<span class="font-bold">Wave</span>
+            <span class="font-bold">{{title}}</span>
           </span>
         </h1>
       </NuxtLink>
