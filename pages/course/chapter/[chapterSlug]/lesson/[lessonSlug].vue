@@ -3,36 +3,39 @@ const course = useCourse();
 const route = useRoute();
 
 definePageMeta({
-  middleware: function ({params}, from) {
-    const course = useCourse()
-    
-    const chapter = course.chapters.find(
-      (chapter) => chapter.slug === params.chapterSlug
-    )
-    if (!chapter) {
-      return abortNavigation(
-        createError({
-          statusCode: 404,
-          statusMessage: "Not Found",
-          message: "Chapter not found",
-        })
-      )
-    }
+  middleware: [
+    function ({ params }, from) {
+      const course = useCourse()
 
-    const lesson = chapter.lessons.find(
-      (lesson) => lesson.slug === params.lessonSlug
-    )
-
-    if (!lesson) {
-      return abortNavigation(
-        createError({
-          statusCode: 404,
-          statusMessage: "Not Found",
-          message: "Lesson not found",
-        })
+      const chapter = course.chapters.find(
+        (chapter) => chapter.slug === params.chapterSlug
       )
-    }
-  },
+      if (!chapter) {
+        return abortNavigation(
+          createError({
+            statusCode: 404,
+            statusMessage: "Not Found",
+            message: "Chapter not found",
+          })
+        )
+      }
+
+      const lesson = chapter.lessons.find(
+        (lesson) => lesson.slug === params.lessonSlug
+      )
+
+      if (!lesson) {
+        return abortNavigation(
+          createError({
+            statusCode: 404,
+            statusMessage: "Not Found",
+            message: "Lesson not found",
+          })
+        )
+      }
+    },
+    "auth"
+  ]
 });
 
 const chapter = computed(() => {
@@ -89,33 +92,18 @@ const toggleComplete = () => {
     </p>
     <h2 class="my-0">{{ lesson.title }}</h2>
     <div class="flex space-x-4 mt-2 mb-8">
-      <NuxtLink
-        v-if="lesson.sourceUrl"
-        class="font-normal text-md text-gray-500"
-        :to="lesson.sourceUrl"
-      >
+      <NuxtLink v-if="lesson.sourceUrl" class="font-normal text-md text-gray-500" :to="lesson.sourceUrl">
         Download Source Code
       </NuxtLink>
-      <NuxtLink
-        v-if="lesson.downloadUrl"
-        class="font-normal text-md text-gray-500"
-        :to="lesson.downloadUrl"
-      >
+      <NuxtLink v-if="lesson.downloadUrl" class="font-normal text-md text-gray-500" :to="lesson.downloadUrl">
         Download Video
       </NuxtLink>
     </div>
 
-    <VideoPlayer
-      v-if="lesson.videoId"
-      :video-id="lesson.videoId"
-      class="w-full"
-    />
+    <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" class="w-full" />
 
     <p>{{ lesson.text }}</p>
-    <LessonCompleteButton
-      v-model="isLessonComplete"
-      @update:model-value="toggleComplete"
-    />
+    <LessonCompleteButton v-model="isLessonComplete" @update:model-value="toggleComplete" />
   </div>
   <div v-else>No content found !</div>
 </template>
