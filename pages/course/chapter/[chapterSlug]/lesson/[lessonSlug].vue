@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Chapter, Lesson } from "~/@types";
+import type { Chapter, ChapterMeta, Lesson, LessonMeta } from "~/@types";
 
-const course = useCourse();
+const course = await useCourse();
 const route = useRoute();
 
 const { chapterSlug, lessonSlug } = route.params;
@@ -11,11 +11,11 @@ const lesson = await useLesson(chapterSlug, lessonSlug);
 
 definePageMeta({
   middleware: [
-    function ({ params }, from) {
-      const course = useCourse();
+    async function ({ params }, from) {
+      const course = await useCourse();
 
-      const chapter = course.chapters.find(
-        (chapter: Chapter) => chapter.slug === params.chapterSlug
+      const chapter = course.value.chapters.find(
+        (chapter: ChapterMeta) => chapter.slug === params.chapterSlug
       );
       if (!chapter) {
         return abortNavigation(
@@ -28,7 +28,7 @@ definePageMeta({
       }
 
       const lesson = chapter.lessons.find(
-        (lesson: Lesson) => lesson.slug === params.lessonSlug
+        (lesson: LessonMeta) => lesson.slug === params.lessonSlug
       );
 
       if (!lesson) {
@@ -46,13 +46,13 @@ definePageMeta({
 });
 
 const chapter = computed(() => {
-  return course.chapters.find(
-    (chapter) => chapter.slug === route.params.chapterSlug
+  return course.value.chapters.find(
+    (chapter: ChapterMeta) => chapter.slug === route.params.chapterSlug
   );
 });
 
 const pageTitle = computed(() => {
-  return `${lesson.value?.title} - ${course.title}` || "Skill Wave";
+  return `${lesson.value?.title} - ${course.value.title}` || "Skill Wave";
 });
 
 useHead({
