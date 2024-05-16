@@ -19,5 +19,5 @@ export interface Lesson {
     videoId:     string;
     text:        string;
     sourceUrl?:  string;
-    path: string;
+    path?: string;
 }

@@ -36,8 +36,8 @@ const resetError = async (error: Ref<Error | null>) => {
           <h4>{{ chapter.title }}</h4>
           <NuxtLink v-for="(lesson, index) in chapter.lessons" :key="lesson.slug" :to="lesson.path"
             class="flex flex-row space-x-1 no-underline prose-sm font-normal py-1 px-4 -mx-4" :class="{
-              'text-blue-500': isActiveLink(lesson.path),
-              'text-gray-600': !isActiveLink(lesson.path)
+              'text-blue-500': isActiveLink(lesson.path || ''),
+              'text-gray-600': !isActiveLink(lesson.path || '')
             }">
             <span class="text-gray-500">{{ index + 1 }}.</span>
             <span>{{ lesson.title }}</span>
