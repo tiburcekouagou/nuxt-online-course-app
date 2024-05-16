@@ -1,7 +1,6 @@
 export interface Course {
     title:    string;
     chapters: Chapter[];
-    firstLesson: Lesson;
 }
 
 export interface Chapter {

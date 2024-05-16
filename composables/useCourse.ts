@@ -12,6 +12,5 @@ export const useCourse = (): Course => {
             lessons,
         }
     })
-    const firstLesson: Lesson = chapters[0].lessons[0]
-    return { ...courseData, chapters, firstLesson };
+    return { ...courseData, chapters };
 }
