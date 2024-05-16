@@ -1,22 +1,5 @@
-export interface Course {
-    title:    string;
-    chapters: Chapter[];
-}
+// full course data
+export type { Course, Chapter, Lesson } from "./course";
 
-export interface Chapter {
-    title:   string;
-    slug:    string;
-    number:  number;
-    lessons: Lesson[];
-}
-
-export interface Lesson {
-    title:       string;
-    slug:        string;
-    number:      number;
-    downloadUrl: string;
-    videoId:     string;
-    text:        string;
-    sourceUrl?:  string;
-    path?: string;
-}
+// course meta data
+export type { ChapterMeta, CourseMeta, LessonMeta } from "./course-meta";

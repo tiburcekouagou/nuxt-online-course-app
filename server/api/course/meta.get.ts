@@ -1,26 +1,9 @@
 import courseData from "~/server/courseData";
 import { Chapter, Course } from "~/@types";
+import { ChapterMeta, CourseMeta, LessonMeta } from "~/@types/course-meta";
 
 courseData as Course
 
-type CourseMeta = {
-    title: string;
-    chapters: ChapterMeta[];
-}
-
-type ChapterMeta = {
-    title:   string;
-    slug:    string;
-    number:  number;
-    lessons: LessonMeta[];
-}
-
-type LessonMeta = {
-    title:       string;
-    slug:        string;
-    number:      number;
-    path: string;
-}
 
 export default defineEventHandler((event): CourseMeta => {
     const chapterMeta: ChapterMeta[] = courseData.chapters.reduce(
