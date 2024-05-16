@@ -2,11 +2,20 @@
 const { title } = useCourse()
 
 const supabase = useSupabaseClient()
+const user = useSupabaseUser()
+
+const baseUrl = useRuntimeConfig().public.baseUrl;
+watchEffect(() => {
+    if (user.value) {
+        navigateTo(`${baseUrl}/`, {external: true})
+    }
+})
+
 const login = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-            redirectTo: '/course'
+            redirectTo: `${baseUrl}/confirm`
         }
     })
 

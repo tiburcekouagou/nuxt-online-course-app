@@ -9,9 +9,19 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxtjs/tailwindcss", "@vueuse/nuxt", "@nuxtjs/supabase"],
   typescript: {
-    typeCheck: true
+    typeCheck: false
   },
-  supabase: {
-    url: process.env.SUPABASE_URL
-  }
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+      supabase: {
+        redirectOptions: {
+          login: '/login',
+          callback: '/confirm',
+          cookieRedirect: true,
+        },
+        cookieName: 'sb'
+      }
+    },
+  },
 })
