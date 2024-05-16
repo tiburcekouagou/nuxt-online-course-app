@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Chapter, Lesson } from '~/@types';
+
 const course = useCourse();
 const route = useRoute();
 
@@ -8,7 +10,7 @@ definePageMeta({
       const course = useCourse()
 
       const chapter = course.chapters.find(
-        (chapter) => chapter.slug === params.chapterSlug
+        (chapter: Chapter) => chapter.slug === params.chapterSlug
       )
       if (!chapter) {
         return abortNavigation(
@@ -21,7 +23,7 @@ definePageMeta({
       }
 
       const lesson = chapter.lessons.find(
-        (lesson) => lesson.slug === params.lessonSlug
+        (lesson: Lesson) => lesson.slug === params.lessonSlug
       )
 
       if (!lesson) {

@@ -1,9 +1,10 @@
+import { Chapter, Lesson } from "~/@types";
 import courseData from "~/server/courseData";
 
-export default defineEventHandler((event) => {
+export default defineEventHandler((event): Lesson => {
     const { chapterSlug, lessonSlug } = event.context.params || {};
 
-    const chapter = courseData.chapters.find(
+    const chapter: Maybe<Chapter> = courseData.chapters.find(
         (chapter) => chapter.slug === chapterSlug
     );
 
@@ -15,7 +16,7 @@ export default defineEventHandler((event) => {
         });
     }
 
-    const lesson = chapter.lessons.find((lesson) => lesson.slug === lessonSlug)
+    const lesson: Maybe<Lesson> = chapter.lessons.find((lesson) => lesson.slug === lessonSlug)
 
     if (!lesson) {
         throw createError({
@@ -24,5 +25,8 @@ export default defineEventHandler((event) => {
             message: "Lesson not found",
         });
     }
-    return lesson;
+    return {
+        ...lesson,
+        path: `/course/chapter/${chapterSlug}/lesson/${lessonSlug}`
+    };
 })
