@@ -1,15 +1,22 @@
 <script setup lang="ts">
-const course = useCourse();
+import type { ChapterMeta, LessonMeta } from "~/@types";
+
+const course = await useCourse();
 const route = useRoute();
+
+const { chapterSlug, lessonSlug } = route.params;
+assertIsTypeString(chapterSlug);
+assertIsTypeString(lessonSlug);
+const lesson = await useLesson(chapterSlug, lessonSlug);
 
 definePageMeta({
   middleware: [
-    function ({ params }, from) {
-      const course = useCourse()
+    async function ({ params }, from) {
+      const course = await useCourse();
 
-      const chapter = course.chapters.find(
-        (chapter) => chapter.slug === params.chapterSlug
-      )
+      const chapter = course.value.chapters.find(
+        (chapter: ChapterMeta) => chapter.slug === params.chapterSlug
+      );
       if (!chapter) {
         return abortNavigation(
           createError({
@@ -17,12 +24,12 @@ definePageMeta({
             statusMessage: "Not Found",
             message: "Chapter not found",
           })
-        )
+        );
       }
 
       const lesson = chapter.lessons.find(
-        (lesson) => lesson.slug === params.lessonSlug
-      )
+        (lesson: LessonMeta) => lesson.slug === params.lessonSlug
+      );
 
       if (!lesson) {
         return abortNavigation(
@@ -31,26 +38,20 @@ definePageMeta({
             statusMessage: "Not Found",
             message: "Lesson not found",
           })
-        )
+        );
       }
     },
   ]
 });
 
 const chapter = computed(() => {
-  return course.chapters.find(
-    (chapter) => chapter.slug === route.params.chapterSlug
-  );
-});
-
-const lesson = computed(() => {
-  return chapter.value?.lessons.find(
-    (lesson) => lesson.slug === route.params.lessonSlug
+  return course.value.chapters.find(
+    (chapter: ChapterMeta) => chapter.slug === route.params.chapterSlug
   );
 });
 
 const pageTitle = computed(() => {
-  return `${lesson.value?.title} - ${course.title}` || "Skill Wave";
+  return `${lesson.value?.title} - ${course.value.title}` || "Skill Wave";
 });
 
 useHead({
@@ -91,18 +92,33 @@ const toggleComplete = () => {
     </p>
     <h2 class="my-0">{{ lesson.title }}</h2>
     <div class="flex space-x-4 mt-2 mb-8">
-      <NuxtLink v-if="lesson.sourceUrl" class="font-normal text-md text-gray-500" :to="lesson.sourceUrl">
+      <NuxtLink
+        v-if="lesson.sourceUrl"
+        class="font-normal text-md text-gray-500"
+        :to="lesson.sourceUrl"
+      >
         Download Source Code
       </NuxtLink>
-      <NuxtLink v-if="lesson.downloadUrl" class="font-normal text-md text-gray-500" :to="lesson.downloadUrl">
+      <NuxtLink
+        v-if="lesson.downloadUrl"
+        class="font-normal text-md text-gray-500"
+        :to="lesson.downloadUrl"
+      >
         Download Video
       </NuxtLink>
     </div>
 
-    <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" class="w-full" />
+    <VideoPlayer
+      v-if="lesson.videoId"
+      :video-id="lesson.videoId"
+      class="w-full"
+    />
 
     <p>{{ lesson.text }}</p>
-    <LessonCompleteButton v-model="isLessonComplete" @update:model-value="toggleComplete" />
+    <LessonCompleteButton
+      v-model="isLessonComplete"
+      @update:model-value="toggleComplete"
+    />
   </div>
   <div v-else>No content found !</div>
 </template>
